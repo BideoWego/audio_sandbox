@@ -17,6 +17,14 @@
     </header>
 
     <main class="container text-center">
+      <p>
+        Beat:
+        <span id="beat">0</span>
+      </p>
+      <p>
+        Measure:
+        <span id="measure">0</span>
+      </p>
       <a id="play" href="#" class="btn btn-lg">
         Play
       </a>
@@ -24,8 +32,6 @@
         Stop
       </a>
     </main>
-
-
 
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -39,13 +45,22 @@
     <!-- Init -->
     <script>
       var kick = new Audio('/assets/audio/kick.wav');
+      var snare = new Audio('/assets/audio/snare.wav');
 
       $(function() {
         bpm();
 
-        bpm.on('quarter', function() {
+        bpm.on('quarter', function(n, m) {
           kick.currentTime = 0;
           kick.play();
+
+          if (m > 3 && (n === 1 || n === 3)) {
+            snare.currentTime = 0;
+            snare.play();
+          }
+
+          $('#beat').text(n);
+          $('#measure').text(m);
         });
 
         $('#play').click(function(e) {
@@ -57,6 +72,8 @@
         $('#stop').click(function(e) {
           e.preventDefault();
           bpm.stop();
+          $('#beat').text(0);
+          $('#measure').text(0);
           return false;
         });
       });
