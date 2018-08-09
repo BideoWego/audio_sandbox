@@ -4,6 +4,11 @@ var bpm = function (options) {
     return new bpm(options);
   }
 
+  // TODO create options settings validations
+  // For example, the user should not be able to set 0 for numberator nor
+  // denominator
+  // The user should not be able to set a numerator less than the denominator
+  // The numerator and denominator must be integers etc...
   bpm._ = this;
   Object.assign(this, bpm._defaults, options || {});
 
@@ -61,6 +66,11 @@ bpm.position = function() {
   var n = instance._currentNumerator;
   var m = instance._currentMeasure;
   return { n: n, m: m };
+};
+
+bpm.addEventType = function(eventType, predicate) {
+  // TODO add ability to define event types that will only fire if the
+  // predicate method returns truthy
 };
 
 bpm._update = function() {
