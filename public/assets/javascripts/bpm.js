@@ -5,11 +5,11 @@ var bpm = function (options) {
   }
 
   bpm._ = this;
-  Object.assign(this, options || {}, bpm._defaults);
+  Object.assign(this, bpm._defaults, options || {});
 
   this._intervalId = null;
   this._lastTimestamp = null;
-  this._tickAmount = ((1000 * 60) / this.tempo) / this.baseDuration;
+  this._tickAmount = ((1000 * 60) / this.tempo) * this.baseDuration;
   this._elaspedTime = 0;
   this._eventListeners = {};
   this._currentNumerator = 0;
@@ -85,8 +85,18 @@ bpm._fire = function() {
     instance._currentNumerator = 0;
     instance._currentMeasure += 1;
   }
-  instance._eventListeners.quarter.forEach(function(callback) {
-    callback(instance._currentNumerator, instance._currentMeasure);
+  var n = instance._currentNumerator;
+  var m = instance._currentMeasure;
+  bpm._emit('beat', n, m);
+  instance._currentNumerator += 1 * instance.baseDuration;
+};
+
+bpm._emit = function(eventType, n, m) {
+  var instance = bpm._;
+  if (!instance._eventListeners[eventType]) {
+    return;
+  }
+  instance._eventListeners[eventType].forEach(function(callback) {
+    callback(n, m);
   });
-  instance._currentNumerator += 1;
 };

@@ -46,17 +46,25 @@
     <script>
       var kick = new Audio('/assets/audio/kick.wav');
       var snare = new Audio('/assets/audio/snare.wav');
+      var hh = new Audio('/assets/audio/hh.wav');
 
       $(function() {
-        bpm();
+        bpm({ baseDuration: 0.5 });
 
-        bpm.on('quarter', function(n, m) {
-          kick.currentTime = 0;
-          kick.play();
+        bpm.on('beat', function(n, m) {
+          if (n === Math.floor(n)) {
+            kick.currentTime = 0;
+            kick.play();
+          }
 
           if (m > 3 && (n === 1 || n === 3)) {
             snare.currentTime = 0;
             snare.play();
+          }
+
+          if (m > 1 && n !== Math.floor(n)) {
+            hh.currentTime = 0;
+            hh.play();
           }
 
           $('#beat').text(n);
