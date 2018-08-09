@@ -31,7 +31,36 @@
       <a id="stop" href="#" class="btn btn-lg">
         Stop
       </a>
+      <a id="toggle-audio" href="#" class="btn btn-lg">
+        Toggle Audio Tags
+      </a>
+
+      <!-- Audio -->
+      <div id="audio" class="row">
+        <div class="col-md-4">
+          <p>Kick</p>
+          <audio id="kick" controls>
+            <source src="/assets/audio/kick.mp3" type="audio/mp3">
+            <source src="/assets/audio/kick.wav" type="audio/wav">
+          </audio>
+        </div>
+        <div class="col-md-4">
+          <p>Snare</p>
+          <audio id="snare" controls>
+            <source src="/assets/audio/snare.mp3" type="audio/mp3">
+            <source src="/assets/audio/snare.wav" type="audio/wav">
+          </audio>
+        </div>
+        <div class="col-md-4">
+          <p>Hi-Hat</p>
+          <audio id="hh" controls>
+            <source src="/assets/audio/hh.mp3" type="audio/mp3">
+            <source src="/assets/audio/hh.wav" type="audio/wav">
+          </audio>
+        </div>
+      </div>
     </main>
+
 
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -44,11 +73,11 @@
 
     <!-- Init -->
     <script>
-      var kick = new Audio('/assets/audio/kick.wav');
-      var snare = new Audio('/assets/audio/snare.wav');
-      var hh = new Audio('/assets/audio/hh.wav');
-
       $(function() {
+        var kick = $('#kick').get(0);
+        var snare = $('#snare').get(0);
+        var hh = $('#hh').get(0);
+
         bpm({ baseDuration: 0.5 });
 
         bpm.on('beat', function(n, m) {
@@ -82,6 +111,12 @@
           bpm.stop();
           $('#beat').text(0);
           $('#measure').text(0);
+          return false;
+        });
+
+        $('#toggle-audio').click(function(e) {
+          e.preventDefault();
+          $('#audio').toggle();
           return false;
         });
       });
