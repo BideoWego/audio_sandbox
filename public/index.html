@@ -17,10 +17,10 @@
     </header>
 
     <main class="container text-center">
-      <a href="#" class="btn btn-lg">
+      <a id="play" href="#" class="btn btn-lg">
         Play
       </a>
-      <a href="#" class="btn btn-lg">
+      <a id="stop" href="#" class="btn btn-lg">
         Stop
       </a>
     </main>
@@ -34,6 +34,32 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
     <!-- My Scripts -->
-    <script src="/assets/javascripts/script.js"></script>
+    <script src="/assets/javascripts/bpm.js"></script>
+
+    <!-- Init -->
+    <script>
+      var kick = new Audio('/assets/audio/kick.wav');
+
+      $(function() {
+        bpm();
+
+        bpm.on('quarter', function() {
+          kick.currentTime = 0;
+          kick.play();
+        });
+
+        $('#play').click(function(e) {
+          e.preventDefault();
+          bpm.start();
+          return false;
+        });
+
+        $('#stop').click(function(e) {
+          e.preventDefault();
+          bpm.stop();
+          return false;
+        });
+      });
+    </script>
   </body>
 </html>
