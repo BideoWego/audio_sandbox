@@ -1,3 +1,3 @@
 # Audio Sandbox
 
-Just a place to play with audio... and sand.
+Exploring playing audio clips in rhythm with event callbacks triggered with a JavaScript powered timer.
