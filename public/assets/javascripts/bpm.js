@@ -19,7 +19,15 @@ var bpm = function (options) {
   this._eventListeners = {};
   this._currentNumerator = 0;
   this._currentMeasure = 0;
+  this._isPlaying = false;
 }
+
+Object.defineProperty(bpm, 'isPlaying', {
+  get: function() {
+    var instance = bpm._;
+    return instance._isPlaying;
+  }
+});
 
 bpm._defaults = {
   tempo: 120,
@@ -40,6 +48,7 @@ bpm.reset = function() {
 
 bpm.start = function() {
   var instance = bpm._;
+  instance._isPlaying = true;
   instance._intervalId = setInterval(function() {
     bpm._update();
   }, this.fps);
@@ -47,6 +56,7 @@ bpm.start = function() {
 
 bpm.stop = function() {
   var instance = bpm._;
+  instance._isPlaying = false;
   clearInterval(instance._intervalId);
   bpm.reset();
 };

@@ -70,56 +70,6 @@
 
     <!-- My Scripts -->
     <script src="/assets/javascripts/bpm.js"></script>
-
-    <!-- Init -->
-    <script>
-      $(function() {
-        var kick = $('#kick').get(0);
-        var snare = $('#snare').get(0);
-        var hh = $('#hh').get(0);
-
-        bpm({ baseDuration: 0.5 });
-
-        bpm.on('beat', function(n, m) {
-          if (n === Math.floor(n)) {
-            kick.currentTime = 0;
-            kick.play();
-          }
-
-          if (m > 3 && (n === 1 || n === 3)) {
-            snare.currentTime = 0;
-            snare.play();
-          }
-
-          if (m > 1 && n !== Math.floor(n)) {
-            hh.currentTime = 0;
-            hh.play();
-          }
-
-          $('#beat').text(n);
-          $('#measure').text(m);
-        });
-
-        $('#play').click(function(e) {
-          e.preventDefault();
-          bpm.start();
-          return false;
-        });
-
-        $('#stop').click(function(e) {
-          e.preventDefault();
-          bpm.stop();
-          $('#beat').text(0);
-          $('#measure').text(0);
-          return false;
-        });
-
-        $('#toggle-audio').click(function(e) {
-          e.preventDefault();
-          $('#audio').toggle();
-          return false;
-        });
-      });
-    </script>
+    <script src="/assets/javascripts/init.js"></script>
   </body>
 </html>
