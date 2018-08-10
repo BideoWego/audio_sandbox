@@ -12,7 +12,7 @@ var bpm = function (options) {
   bpm._ = this;
   Object.assign(this, bpm._defaults, options || {});
 
-  this._intervalId = null;
+  this._frameId = null;
   this._lastTimestamp = null;
   this._tickAmount = ((1000 * 60) / this.tempo) * this.baseDuration;
   this._elaspedTime = 0;
@@ -39,7 +39,7 @@ bpm._defaults = {
 
 bpm.reset = function() {
   var instance = bpm._;
-  instance._intervalId = null;
+  instance._frameId = null;
   instance._lastTimestamp = null;
   instance._elaspedTime = 0;
   instance._currentNumerator = 0;
@@ -49,15 +49,13 @@ bpm.reset = function() {
 bpm.start = function() {
   var instance = bpm._;
   instance._isPlaying = true;
-  instance._intervalId = setInterval(function() {
-    bpm._update();
-  }, this.fps);
+  instance._frameId = window.requestAnimationFrame(bpm._update);
 };
 
 bpm.stop = function() {
   var instance = bpm._;
   instance._isPlaying = false;
-  clearInterval(instance._intervalId);
+  window.cancelAnimationFrame(instance._frameId);
   bpm.reset();
 };
 
@@ -83,11 +81,11 @@ bpm.addEventType = function(eventType, predicate) {
   // predicate method returns truthy
 };
 
-bpm._update = function() {
+bpm._update = function(currentTimestamp) {
   var instance = bpm._;
-  var currentTimestamp = Date.now();
   if (!instance._lastTimestamp) {
     instance._lastTimestamp = currentTimestamp;
+    bpm._nextFrame();
     return;
   }
   var delta = currentTimestamp - instance._lastTimestamp;
@@ -97,6 +95,14 @@ bpm._update = function() {
     instance._elaspedTime = 0;
   }
   instance._lastTimestamp = currentTimestamp;
+  bpm._nextFrame();
+};
+
+bpm._nextFrame = function() {
+  if (bpm.isPlaying) {
+    var instance = bpm._;
+    instance._frameId = window.requestAnimationFrame(bpm._update);
+  }
 };
 
 bpm._fire = function() {

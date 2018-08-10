@@ -7,7 +7,10 @@ window.onload = function() {
   var playBtn = document.getElementById('play');
   var stopBtn = document.getElementById('stop');
   var toggleAudioBtn = document.getElementById('toggle-audio');
+  var toggleCounterBtn = document.getElementById('toggle-counter');
   var audio = document.getElementById('audio');
+  var counter = document.getElementById('counter');
+  var isShowingCounter = true;
 
   playBtn.addEventListener('click', function(e) {
     e.preventDefault();
@@ -33,6 +36,14 @@ window.onload = function() {
     return false;
   });
 
+  toggleCounterBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    counter.style.display = counter.style.display === 'none' ? 'block' : 'none';
+    isShowingCounter = !isShowingCounter;
+    stopBtn.click();
+    return false;
+  });
+
   bpm({ baseDuration: 0.5 });
 
   bpm.on('beat', function(n, m) {
@@ -51,7 +62,9 @@ window.onload = function() {
       hh.play();
     }
 
-    beat.innerHTML = n;
-    measure.innerHTML = m;
+    if (isShowingCounter) {
+      beat.innerHTML = n;
+      measure.innerHTML = m;
+    }
   });
 };
